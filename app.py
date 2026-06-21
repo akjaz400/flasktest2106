@@ -1,37 +1,23 @@
-pip install flask
-
+import os
 from flask import Flask, jsonify, request
 
-# Initialize the Flask application
-app = Flask(Akjflask)
+app = Flask(__name__)
 
-# Endpoint 1: A simple GET request that returns text
 @app.route('/', methods=['GET'])
 def home():
-    return "Welcome to my Python Web Service!"
+    return "Hello! My web service is live on Render!"
 
-# Endpoint 2: A GET request that returns JSON data
-@app.route('/api/user', methods=['GET'])
-def get_user():
-    user_data = {
-        "id": 101,
-        "name": "Alice",
-        "role": "Developer",
-        "status": "Active"
-    }
-    return jsonify(user_data)
+@app.route('/api/status', methods=['GET'])
+def get_status():
+    return jsonify({
+        "status": "online",
+        "platform": "Render",
+        "message": "API is responding perfectly."
+    })
 
-# Endpoint 3: A POST request that accepts user input
-@app.route('/api/greet', methods=['POST'])
-def greet_user():
-    # Get the JSON payload sent by the user
-    data = request.get_json()
-    
-    # Extract the 'name' field, default to 'Guest' if missing
-    username = data.get('name', 'Guest')
-    
-    return jsonify({"message": f"Hello, {username}! Welcome to our service."})
-
-# Run the server locally
+# This part ensures Render can pass its own PORT variable to your app
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Render injects the PORT environment variable automatically
+    port = int(os.environ.get('PORT', 5000))
+    # Bind to 0.0.0.0 so the app is accessible externally
+    app.run(host='0.0.0.0', port=port)
