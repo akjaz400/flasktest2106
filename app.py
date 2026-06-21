@@ -5,7 +5,6 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def home():
-    return "Hello! My web service is live on Render!"
     html_content = """
     <!DOCTYPE html>
     <html lang="en">
